@@ -1,0 +1,8 @@
+.spiner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 55vh;
+    width: 100%;
+    /* border: 2px solid red; */
+}

@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+body {
+  background-color: #eee;
+  font-family: "Poppins", sans-serif;
+}
+
+
+
+.card {
+  background-color: #fff;
+  position: relative;
+  width: 280px;
+  border: none;
+  margin: 6px;
+}
+
+.percent {
+  width: 63px;
+  height: 30px;
+  position: absolute;
+  background: red;
+  color: #fff;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  border-bottom-left-radius: 15px;
+  padding: 10px;
+}
+
+.card-image {
+  /* padding: 5px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-inner {
+  padding: 8px;
+}
+
+.price span {
+  color: orange;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.price sup {
+  color: orange;
+  font-weight: 600;
+  font-size: 14px;
+  top: -3px;
+}
+
+.details {
+  border-radius: 20px;
+
+  width: 110px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wishlist {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  color: #ebebeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.5s all;
+  font-size: 15px;
+}
+
+.wishlist:hover {
+  color: #000000;
+}
+
+.customContanier{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.test{
+  /* border: 2px solid red; */
+  display: flex;
+  justify-content: space-between;
+}
