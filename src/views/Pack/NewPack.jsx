@@ -8,16 +8,21 @@ import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {addPack, fetchPacks} from "../../store/PackSlice.jsx";
 export default function NewPack({info}){
+
     const [codePack,setCodePack]= useState("");
     const [nbrProduits,setnbrProduits]= useState(1);
     const [disponible,setDisponible]= useState(0);
     const [qte,setQte]= useState(1);
     const [prix,setPrix]= useState(1);
+    const [imagePath,setImagePath]= useState("");
+    const [description,setDescription]= useState("");
 
     const dispatch = useDispatch();
     const  handleSavePack = () => {
+        const basePath = "C:\\fakepath\\";
+        const image = imagePath.replace(basePath, "");
         setQte(2)
-        const pack = {codePack,nbrProduits,disponible,qte,prix};
+        const pack = {codePack,nbrProduits,disponible,description,image,qte,prix};
         dispatch(addPack(pack));
         dispatch(fetchPacks(info.page));
     };
@@ -60,7 +65,7 @@ export default function NewPack({info}){
 
                             <form >
                                 <div className="mb-3">
-                                    <label  className="form-label">Code de produit:</label>
+                                    <label  className="form-label">Code de pack:</label>
                                     <input
                                         onChange={(e)=> setCodePack(e.target.value)}
                                         value={codePack}
@@ -82,6 +87,25 @@ export default function NewPack({info}){
                                         type={"number"}
                                         className="form-control" ></input>
                                 </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Description :</label>
+                                    <input
+                                        type="text-aria"
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        value={description}
+                                        className="form-control"
+                                    ></input>
+                                </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Image :</label>
+                                        <input
+                                            type="file"
+                                            onChange={(e) => setImagePath(e.target.value)}
+                                            value={imagePath}
+                                            className="form-control"
+                                            id="customFile"
+                                        />
+                                    </div>
                                 <div className="mb-3">
                                     <label className="form-label">Disponible :</label>
                                     <div className="d-flex">

@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addProduit, updateProduit } from "../../store/ProduitSlice";
-import {
-  fetchAllFournisseurs,
-  selectFournisseurs,
-} from "../../store/FournisseurSlice";
-import {
-  fetchAllCategories,
-  selectCategories,
-} from "../../store/CategorieSlice";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateProduit } from "../../store/ProduitSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 export default function EditProduit({ produitInfo }) {
-  // const categories = useSelector(selectCategories);
   const [code_produit, setCodeProduit] = useState(produitInfo.code_produit);
   const [nom, setNom] = useState(produitInfo.nom);
   const [imagePath, setImagePath] = useState("");
@@ -23,26 +14,22 @@ export default function EditProduit({ produitInfo }) {
   const [id, setId] = useState(produitInfo.id);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(fetchAllFournisseurs());
-  //   dispatch(fetchAllCategories());
-  // }, [dispatch]);
   const handleAdd = () => {
     const basePath = "C:\\fakepath\\";
     const image = imagePath.replace(basePath, "");
 
     const produit = {
-        "id": id,
-        "code_produit": code_produit,
-        "nom": nom,
-        "image": image,
-        "quantite": quantite,
-        "prix_unitaire": prix_unitaire,
-        "description": description,
-        "categorie_id": categorie_id
+      id: id,
+      code_produit: code_produit,
+      nom: nom,
+      image: image,
+      quantite: quantite,
+      prix_unitaire: prix_unitaire,
+      description: description,
+      categorie_id: categorie_id,
     };
     console.log(produit);
-    dispatch(updateProduit({produit}));
+    dispatch(updateProduit({ produit }));
   };
 
   return (
@@ -65,11 +52,11 @@ export default function EditProduit({ produitInfo }) {
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
+              Modifier Produit
               </h5>
               <button
                 type="button"
@@ -80,38 +67,52 @@ export default function EditProduit({ produitInfo }) {
             </div>
             <div class="modal-body">
               <form>
-                <div className="mb-3">
-                  <label className="form-label">Code Produit :</label>
-                  <input
-                    onChange={(e) => setCodeProduit(e.target.value)}
-                    value={code_produit}
-                    className="form-control"
-                  ></input>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Code Produit :</label>
+                      <input
+                        onChange={(e) => setCodeProduit(e.target.value)}
+                        value={code_produit}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Nom :</label>
+                      <input
+                        onChange={(e) => setNom(e.target.value)}
+                        value={nom}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Nom :</label>
-                  <input
-                    onChange={(e) => setNom(e.target.value)}
-                    value={nom}
-                    className="form-control"
-                  ></input>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Prix Unitaire :</label>
+                      <input
+                        onChange={(e) => setPrixUnitaire(e.target.value)}
+                        value={prix_unitaire}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Quantite :</label>
+                      <input
+                        value={quantite}
+                        className="form-control"
+                        disabled
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Prix Unitaire :</label>
-                  <input
-                    onChange={(e) => setPrixUnitaire(e.target.value)}
-                    value={prix_unitaire}
-                    className="form-control"
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Quantite :</label>
-                  <input
-                    value={quantite}
-                    className="form-control"
-                    disabled
-                  ></input>
-                </div>
+
                 <div className="mb-3">
                   <label className="form-label">Catégorie :</label>
                   <select
@@ -127,30 +128,31 @@ export default function EditProduit({ produitInfo }) {
                     ))}
                   </select>
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Image :</label>
-                  {/* <input
-                    type="text-aria"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
-                    className="form-control"
-                  ></input> */}
-                  <input
-                    type="file"
-                    onChange={(e) => setImagePath(e.target.value)}
-                    value={imagePath}
-                    class="form-control"
-                    id="customFile"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Description :</label>
-                  <input
-                    type="text-aria"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
-                    className="form-control"
-                  ></input>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Image :</label>
+                      <input
+                        type="file"
+                        onChange={(e) => setImagePath(e.target.value)}
+                        value={imagePath}
+                        className="form-control"
+                        id="customFile"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label">Description :</label>
+                      <input
+                        type="text-aria"
+                        onChange={(e) => setDescription(e.target.value)}
+                        value={description}
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
                 </div>
               </form>
             </div>
@@ -161,7 +163,7 @@ export default function EditProduit({ produitInfo }) {
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
-                Close
+                Fermer
               </button>
               <button
                 data-bs-dismiss="modal"

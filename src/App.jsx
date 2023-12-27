@@ -14,16 +14,14 @@ import Produit from "./views/Produit/Produit";
 import EditClient from "./views/Client/EditClient.jsx";
 import Packs from "./views/Pack/Packs";
 import Commande from "./views/Commande/Commande.jsx";
+import CommandesPack from "./views/CommandesPack/CommandesPack";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
           <Route path="/" element={<Login />} />
-          {/* <Route path="/register" element={<SignUp />} /> */}
-          {/* <Route path="/main" element={<Main />} /> */}
           <Route element={<RequireAuth />}>
             <Route path="/dashboard/" element={<ProtectedRoutes />}>
               <Route path="fournisseur" element={<Fournisseur />} />
@@ -32,6 +30,7 @@ function App() {
               <Route path="client" element={<Clients/>} />
               <Route path="pack" element={<Packs/>} />
               <Route path="commande" element={<Commande/>} />
+              <Route path="commandePack" element={<CommandesPack/>} />
             </Route>
           </Route>
         </Routes>

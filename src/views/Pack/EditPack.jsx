@@ -15,13 +15,16 @@ export default function EditPack({infoPack}){
     const [disponible,setDisponible]= useState(infoPack.disponible);
     const [qte,setQte]= useState(infoPack.qte);
     const [prix,setPrix]= useState(infoPack.prix);
+    const [description,setDescription]= useState(infoPack.description);
+    const [imagePath,setImagePath]= useState("");
 
 
     const dispatch = useDispatch();
 
     const handleUpdatePack= (event)=>{
-
-        let pack = {id,codePack,nbrProduits,disponible,qte,prix};
+        const basePath = "C:\\fakepath\\";
+        const image = imagePath.replace(basePath, "");
+        let pack = {id,codePack,nbrProduits,description,image,disponible,qte,prix};
 
         dispatch(updatePack(pack))
 
@@ -54,7 +57,7 @@ export default function EditPack({infoPack}){
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">
-                                Ajouter pack
+                                Modifier pack
                             </h5>
                             <button
                                 type="button"
@@ -67,7 +70,7 @@ export default function EditPack({infoPack}){
 
                             <form >
                                 <div className="mb-3">
-                                    <label  className="form-label">Code de produit:</label>
+                                    <label  className="form-label">Code de pack:</label>
                                     <input
                                         onChange={(e)=> setCodePack(e.target.value)}
                                         value={codePack}
@@ -88,6 +91,25 @@ export default function EditPack({infoPack}){
                                         value={prix}
                                         type={"number"}
                                         className="form-control" ></input>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Description :</label>
+                                    <input
+                                        type="text-aria"
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        value={description}
+                                        className="form-control"
+                                    ></input>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Image :</label>
+                                    <input
+                                        type="file"
+                                        onChange={(e) => setImagePath(e.target.value)}
+                                        value={imagePath}
+                                        className="form-control"
+                                        id="customFile"
+                                    />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Disponible :</label>

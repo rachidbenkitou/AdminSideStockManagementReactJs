@@ -35,7 +35,7 @@ export const searchPack = createAsyncThunk(
         try {
             const response = await getPack(codePack);
             console.log(response.data.pack)
-            return {data:response.data.pack.data,totalPages:response.data.pack.totalPages};
+            return {data:response.data.packs.data,totalPages:response.data.packs.totalPages};
         } catch (error) {
             console.log(error);
         }

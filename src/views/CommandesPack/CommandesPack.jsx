@@ -3,65 +3,64 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCartShopping, faSearch, faTrash, faUser, faUserAlt} from "@fortawesome/free-solid-svg-icons";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import emailjs from '@emailjs/browser';
 
-import {
-    fetchCommands,
-    searchCommande,
-    selectCommands,
-    totalPages,
-    updateCommandeStatus
-} from "../../store/CommandeSlice.jsx";
+
+
 import {updateClient} from "../../store/ClientSlice.jsx";
 import {searchPack} from "../../store/PackSlice.jsx";
 import {BarLoader} from "react-spinners";
-export default function Commande() {
+import {
+    fetchCommandePack, searchCommandePack,
+    selectCommandePacks,
+    totalPages,
+    updateCommandePackStatus
+} from "../../store/CommandePackSlice.jsx";
+import {updateCommandeStatus} from "../../store/CommandeSlice.jsx";
+import emailjs from "@emailjs/browser";
+export default function CommandesPack() {
     const dispatch = useDispatch()
-    const commands = useSelector(selectCommands);
+    const commandPacks = useSelector(selectCommandePacks);
     const totalPage = useSelector(totalPages);
     const [currentPage, setCurrentPage] = useState(1);
     // const [status ,setStatus]= useState()
     const [date ,setDate]= useState()
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     useEffect(() => {
         console.log(totalPage)
-        dispatch(fetchCommands(1));
+        dispatch(fetchCommandePack(1));
     }, [dispatch]);
-
     // const handleDeleteClient =  (client) => {
     //     console.log(client);
     //     dispatch(removeClient(client));
     //
     // };
-    const handleUpdateCommandeStatus = (command)=>{
+    const handleUpdateCommandePackStatus = (command)=>{
         if (command.orderStatus_id === 1){
             let commande1 = {id:command.id,date_commande:command.date_commande,
-            prix:command.prix,client_id:command.client_id,orderStatus_id:2,discount_id:command.discount_id};
-            dispatch(updateCommandeStatus(commande1))
+                prix:command.prix,client_id:command.client_id,orderStatus_id:2,discount_id:command.discount_id};
+            dispatch(updateCommandePackStatus(commande1))
             console.log(commande1)
         }else{
             let commande2 = {id:command.id,date_commande:command.date_commande,
                 prix:command.prix,client_id:command.client_id,orderStatus_id:1,discount_id:command.discount_id};
-            dispatch(updateCommandeStatus(commande2))
+            dispatch(updateCommandePackStatus(commande2))
             console.log(commande2)
         }
-        console.log(command)
-        emailjs.send('service_y5sor1o', 'template_wuenho7', command, '6kWWEfmvXWn8foyKd')
+        emailjs.send('service_y5sor1o', 'template_bmn80r3', command, '6kWWEfmvXWn8foyKd')
             .then((result) => {
                 console.log(result.text);
             }, (error) => {
                 console.log(error.text);
             });
 
-
     }
     const handelPaginate = (page) => {
 
         if(currentPage>=totalPage){
             setCurrentPage(1);
-            dispatch(fetchCommands(1));
+            dispatch(fetchCommandePack(1));
         }else{
-            dispatch(fetchCommands(page));
+            dispatch(fetchCommandePack(page));
             setCurrentPage(page);
         }
 
@@ -90,7 +89,7 @@ export default function Commande() {
             (_, index) => startIdx + index
         );
     };
-    // const handleSearch = (e) => {
+    // const handle = (e) => {
     //     e.preventDefault()
     //     if(firstName==="" && lastName===""){
     //         dispatch(fetchClients(1))
@@ -101,8 +100,8 @@ export default function Commande() {
     const handleSearch = (e) => {
         e.preventDefault()
         console.log(date)
-        dispatch(searchCommande(date));
-        console.log(commands)
+        dispatch(searchCommandePack(date));
+        console.log(commandPacks)
     };
 
     return (
@@ -140,7 +139,7 @@ export default function Commande() {
             </div>
             <br/>
 
-            {commands === undefined && (
+            {commandPacks.length <=0  && (
                 <div>
                     <BarLoader color="#0d6efd" className="w-100" />
                 </div>
@@ -159,18 +158,18 @@ export default function Commande() {
                     </tr>
                     </thead>
                     <tbody>
-                    {commands !== undefined&& Array.isArray(commands) && commands.map((command)=>(
-                        command  && (
-                            <tr  key={command && command.id}>
-                                {command && <td>{command.id}</td>}
-                                {command && <td>{command.date_commande}</td>}
-                                {command && <td>{command.client.firstName} {command.client.lastName}
-                                        <button
-                                            style={{marginLeft: '10px',width: '20px',height:'20px'}}
-                                            type="button" className="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target={"#exampleModal"+command.client.id}>
-                                            <FontAwesomeIcon icon={faUser}  style={{width:'12',height:'12',marginLeft:'-6px',marginBottom:'10px',marginTop:'-5px'}} />
-                                        </button>
-                                    <div className="modal fade" id={"exampleModal"+command.client.id} tabIndex="-1" aria-labelledby={"exampleModal"+command.client.id} aria-hidden="true">
+                    {commandPacks.length > 0 && Array.isArray(commandPacks) && commandPacks.map((commandPack)=>(
+                        commandPack.packs.length > 0 && (
+                            <tr  key={commandPack && commandPack.id}>
+                                {commandPack && <td>{commandPack.id}</td>}
+                                {commandPack && <td>{commandPack.date_commande}</td>}
+                                {commandPack && <td>{commandPack.client.firstName} {commandPack.client.lastName}
+                                    <button
+                                        style={{marginLeft: '10px',width: '20px',height:'20px'}}
+                                        type="button" className="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target={"#exampleModal"+commandPack.client.id}>
+                                        <FontAwesomeIcon icon={faUser}  style={{width:'12',height:'12',marginLeft:'-6px',marginBottom:'10px',marginTop:'-5px'}} />
+                                    </button>
+                                    <div className="modal fade" id={"exampleModal"+commandPack.client.id} tabIndex="-1" aria-labelledby={"exampleModal"+commandPack.client.id} aria-hidden="true">
                                         <div className="modal-dialog">
                                             <div className="modal-content">
                                                 <div className="modal-header">
@@ -180,26 +179,26 @@ export default function Commande() {
                                                 <div className="modal-body">
                                                     <div className="row">
                                                         <div className="col">
-                                                        <p><strong>ID:</strong> <span style={{marginLeft:'5px'}}>{command.client.id}</span></p>
+                                                            <p><strong>ID:</strong> <span style={{marginLeft:'5px'}}>{commandPack.client.id}</span></p>
                                                         </div>
                                                         <div className="col">
-                                                        <p><strong>Prénom:</strong><span style={{marginLeft:'5px'}}>{command.client.firstName}</span></p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                        <p><strong>Nom:</strong><span style={{marginLeft:'5px'}}>{command.client.lastName}</span></p>
-                                                        </div>
-                                                        <div className="col">
-                                                        <p><strong>Email:</strong><span style={{marginLeft:'5px'}}>{command.client.email}</span></p>
+                                                            <p><strong>Prénom:</strong><span style={{marginLeft:'5px'}}>{commandPack.client.firstName}</span></p>
                                                         </div>
                                                     </div>
                                                     <div className="row">
                                                         <div className="col">
-                                                        <p><strong>Téléphone:</strong><span style={{marginLeft:'5px'}}>{command.client.phone}</span></p>
+                                                            <p><strong>Nom:</strong><span style={{marginLeft:'5px'}}>{commandPack.client.lastName}</span></p>
                                                         </div>
                                                         <div className="col">
-                                                        <p><strong>Adresse:</strong><span style={{marginLeft:'5px'}}>{command.client.adresse}</span></p>
+                                                            <p><strong>Email:</strong><span style={{marginLeft:'5px'}}>{commandPack.client.email}</span></p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col">
+                                                            <p><strong>Téléphone:</strong><span style={{marginLeft:'5px'}}>{commandPack.client.phone}</span></p>
+                                                        </div>
+                                                        <div className="col">
+                                                            <p><strong>Adresse:</strong><span style={{marginLeft:'5px'}}>{commandPack.client.adresse}</span></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -212,26 +211,26 @@ export default function Commande() {
 
                                 </td>}
 
-                                {command &&<td>{command.prix}</td>}
-                                {command &&<td>
-                                    { command.orderStatus_id===1?<button  onClick={()=> handleUpdateCommandeStatus(command)} className={"btn btn-warning"}>
+                                {commandPack &&<td>{commandPack.prix}</td>}
+                                {commandPack &&<td>
+                                    { commandPack.orderStatus_id===1?<button  onClick={()=> handleUpdateCommandePackStatus(commandPack)} className={"btn btn-warning"}>
                                         en cours
                                     </button>:<button  disabled className={"btn btn-success"}>
                                         Livré
                                     </button>}
-                                    </td>}
+                                </td>}
 
-                                {command &&<td>
+                                {commandPack&&<td>
                                     <div className="dropdown">
-                                    <button className="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faCartShopping} />
-                                    </button>
-                                    <ul className="dropdown-menu">
-                                        {Array.isArray(command.produits) && command.produits.map((produit)=>(
-                                        <li disabled key={produit && produit.id} ><a className="dropdown-item" href="#">{produit.nom}</a></li>
-                                        ))}
-                                    </ul>
-                                </div></td>}
+                                        <button className="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <FontAwesomeIcon icon={faCartShopping} />
+                                        </button>
+                                        <ul className="dropdown-menu">
+                                            {Array.isArray(commandPack.packs) && commandPack.packs.map((pack)=>(
+                                                <li  key={pack && pack.id} ><a className="dropdown-item" href="#">{pack.codePack}</a></li>
+                                            ))}
+                                        </ul>
+                                    </div></td>}
 
                                 {/*<td>*/}
                                 {/*    <button onClick={()=> handleCheckProduct(product)} className={"btn btn-outline-success"}>*/}

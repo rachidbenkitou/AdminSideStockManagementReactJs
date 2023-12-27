@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import AddFournisseur from "./AddFournisseur";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,7 +18,7 @@ export default function Fournisseur() {
   const totalPage = useSelector(totalPages);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -34,11 +34,11 @@ export default function Fournisseur() {
 
   const handleDeleteFournisseur = (fournisseur) => {
     dispatch(removeFournisseur(fournisseur));
-    if(fournisseurs.length<=1) {
-      setCurrentPage(currentPage-1)
-      dispatch(fetchFournisseurs(currentPage-1))
-    }else{
-      dispatch(fetchFournisseurs(currentPage))
+    if (fournisseurs.length <= 1) {
+      setCurrentPage(currentPage - 1);
+      dispatch(fetchFournisseurs(currentPage - 1));
+    } else {
+      dispatch(fetchFournisseurs(currentPage));
     }
   };
   const handelPaginate = (page) => {
@@ -57,12 +57,16 @@ export default function Fournisseur() {
     }
   };
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (search === "") {
+      setLoading(true);
       dispatch(fetchFournisseurs(1));
+      setLoading(false);
     } else {
+      setLoading(true);
       setCurrentPage(1);
       dispatch(searchFournisseur({ words: search, page: 1 }));
+      setLoading(false);
     }
   };
   const renderPaginationLinks = () => {
@@ -95,11 +99,11 @@ export default function Fournisseur() {
         <h1 className="h2">Gestion des fournisseurs</h1>
         <div className="btn-toolbar mb-2 mb-md-0">
           <div className="btn-group me-2">
-            <AddFournisseur info={{page:currentPage}} />
+            <AddFournisseur info={{ page: currentPage }} />
           </div>
         </div>
       </div>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
         <form className="d-flex" role="search">
           <input
             className="form-control me-2"
@@ -110,118 +114,124 @@ export default function Fournisseur() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button
-            onClick={(e)=>handleSearch(e)}
+            onClick={(e) => handleSearch(e)}
             className="btn btn-outline-primary"
             type="submit"
           >
-            Search
+            <FontAwesomeIcon icon={faSearch}/>
           </button>
         </form>
       </div>
-      {fournisseurs.length <= 0 && (
+      {loading && fournisseurs.length <= 0 && (
         <div>
           <BarLoader color="#0d6efd" className="w-100" />
         </div>
       )}
-      
-        <div className="table-responsive small">
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Code</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Téléphone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Fax</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            {fournisseurs.length>0 && ( <tbody>
-              {Array.isArray(fournisseurs) &&
-                fournisseurs &&
-                fournisseurs.slice(0, 5).map((fournisseur) => (
-                  <tr key={fournisseur.id}>
-                    <td>{fournisseur.id}</td>
-                    <td>{fournisseur.code_fournisseur}</td>
-                    <td>{fournisseur.nom}</td>
-                    <td>{fournisseur.tel}</td>
-                    <td>{fournisseur.mail}</td>
-                    <td>{fournisseur.fax}</td>
-                    <td>
-                      <button
-                        onClick={() => handleDeleteFournisseur(fournisseur)}
-                        className="btn btn-outline-danger"
-                      >
-                        <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-                      </button>
-                    </td>
-                    <td>
-                      <EditFournisseur
-                        fournisseurInfo={{
-                          id: fournisseur.id,
-                          nom: fournisseur.nom,
-                          code_fournisseur: fournisseur.code_fournisseur,
-                          tel: fournisseur.tel,
-                          fax: fournisseur.fax,
-                          mail: fournisseur.mail,
-                          adresse: fournisseur.adresse,
-                        }}
-                      />
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-      )}
 
-          </table>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
+      <div className="table-responsive small">
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Code</th>
+              <th scope="col">Nom</th>
+              <th scope="col">Téléphone</th>
+              <th scope="col">Email</th>
+              <th scope="col">Fax</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {fournisseurs.length > 0 ? (
+              Array.isArray(fournisseurs) &&
+              fournisseurs &&
+              fournisseurs.slice(0, 5).map((fournisseur) => (
+                <tr key={fournisseur.id}>
+                  <td>{fournisseur.id}</td>
+                  <td>{fournisseur.code_fournisseur}</td>
+                  <td>{fournisseur.nom}</td>
+                  <td>{fournisseur.tel}</td>
+                  <td>{fournisseur.mail}</td>
+                  <td>{fournisseur.fax}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDeleteFournisseur(fournisseur)}
+                      className="btn btn-outline-danger"
+                    >
+                      <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                    </button>
+                  </td>
+                  <td>
+                    <EditFournisseur
+                      fournisseurInfo={{
+                        id: fournisseur.id,
+                        nom: fournisseur.nom,
+                        code_fournisseur: fournisseur.code_fournisseur,
+                        tel: fournisseur.tel,
+                        fax: fournisseur.fax,
+                        mail: fournisseur.mail,
+                        adresse: fournisseur.adresse,
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" className="text-center">
+                  Aucun enregistrement trouvé
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li
+              class="page-item"
+              onClick={() => handelPaginate(currentPage - 1)}
+            >
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {renderPaginationLinks().map((page) => (
               <li
-                class="page-item"
-                onClick={() => handelPaginate(currentPage - 1)}
+                onClick={() => handelPaginate(page)}
+                key={page}
+                className={
+                  page === currentPage ? "page-item active" : "page-item"
+                }
               >
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
+                <a href="#" className="page-link">
+                  {page}
                 </a>
               </li>
-              {renderPaginationLinks().map((page) => (
-                <li
-                  onClick={() => handelPaginate(page)}
-                  key={page}
-                  className={
-                    page === currentPage ? "page-item active" : "page-item"
-                  }
-                >
-                  <a href="#" className="page-link">
-                    {page}
-                  </a>
-                </li>
-              ))}
-              <li
+            ))}
+            <li
+              class={
+                totalPage && currentPage === totalPage
+                  ? "page-item disabled"
+                  : "page-item"
+              }
+              onClick={() => handelPaginate(currentPage + 1)}
+            >
+              <a
                 class={
                   totalPage && currentPage === totalPage
-                    ? "page-item disabled"
-                    : "page-item"
+                    ? "page-link disabled"
+                    : "page-link"
                 }
-                onClick={() => handelPaginate(currentPage + 1)}
+                href="#"
+                aria-label="Next"
               >
-                <a
-                  class={
-                    totalPage && currentPage === totalPage
-                      ? "page-link disabled"
-                      : "page-link"
-                  }
-                  href="#"
-                  aria-label="Next"
-                >
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </main>
   );
 }

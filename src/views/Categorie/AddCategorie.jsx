@@ -12,6 +12,8 @@ export default function AddCategorie({info}) {
     const categorie = {nom, description};
     dispatch(addCategorie(categorie));
     dispatch(fetchCategories(info.page))
+    setNom("")
+    setDescription("")
   };
   
   return (
@@ -37,7 +39,7 @@ export default function AddCategorie({info}) {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
+              Ajouter Categorie
               </h5>
               <button
                 type="button"
@@ -73,7 +75,7 @@ export default function AddCategorie({info}) {
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
-                Close
+                Fermer
               </button>
               <button 
               data-bs-dismiss="modal"

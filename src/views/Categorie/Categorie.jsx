@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCategories,
@@ -95,7 +95,7 @@ export default function Categorie() {
           </div>
         </div>
       </div>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
         <form className="d-flex" role="search">
           <input
             className="form-control me-2"
@@ -110,7 +110,7 @@ export default function Categorie() {
             className="btn btn-outline-primary"
             type="submit"
           >
-            Search
+            <FontAwesomeIcon icon={faSearch} />
           </button>
         </form>
       </div>

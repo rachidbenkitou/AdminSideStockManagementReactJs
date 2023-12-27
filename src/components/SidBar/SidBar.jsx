@@ -3,6 +3,8 @@ import {Link, useNavigate} from "react-router-dom";
 import Cookie from 'cookie-universal'
 import axios from "axios";
 import { instance } from "../../apis/AxiosInstance";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBox, faBoxOpen, faBoxesPacking, faCab, faCarBattery, faCaretDown, faCartPlus, faCartShopping, faDashboard, faFileAlt, faFileArchive, faTractor, faTruck, faUser, faUserFriends } from "@fortawesome/free-solid-svg-icons";
 export default function SidBar() {
   const cookies = Cookie()
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export default function SidBar() {
         >
           <div className="offcanvas-header">
             <h5 className="offcanvas-title" id="sidebarMenuLabel">
-              Company name
+              RYA Admin
             </h5>
             <button
               type="button"
@@ -43,80 +45,70 @@ export default function SidBar() {
                   aria-current="page"
                   href="#"
                 >
-                  <svg className="bi">
-                    <use xlinkHref="#house-fill" />
-                  </svg>
+                  <FontAwesomeIcon icon={faDashboard}/>
                   Dashboard
                 </a>
               </li>
               <li className="nav-item">
                 <Link className="nav-link d-flex align-items-center gap-2" to="categorie">
-                  <svg className="bi">
-                    <use xlinkHref="#file-earmark" />
-                  </svg>
+                  <FontAwesomeIcon icon={faFileAlt}/>
                   Categories
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link d-flex align-items-center gap-2" to="fournisseur">
-                  <svg className="bi">
-                    <use xlinkHref="#file-earmark" />
-                  </svg>
+                  <FontAwesomeIcon icon={faTruck}/>
                   Fournisseurs
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link d-flex align-items-center gap-2" to="produit">
-                  <svg className="bi">
-                    <use xlinkHref="#cart" />
-                  </svg>
+                  <FontAwesomeIcon icon={faCartShopping}/>
                   Produits
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link d-flex align-items-center gap-2" to="client">
-                  <svg className="bi">
-                    <use xlinkHref="#people" />
-                  </svg>
+                  <FontAwesomeIcon icon={faUserFriends}/>
                   Clients
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link d-flex align-items-center gap-2" to="pack">
-                  <svg className="bi">
-                    <use xlinkHref="#graph-up" />
-                  </svg>
+                  <FontAwesomeIcon icon={faBoxOpen}/>
                   Packs
                 </Link>
               </li>
+
               <li className="nav-item">
-                <Link className="nav-link d-flex align-items-center gap-2" to="commande">
-                  <svg className="bi">
+
+                <div className="btn-group">
+                  <button type="button" className="btn btn-light">   <svg className="bi">
                     <use xlinkHref="#graph-up" />
-                  </svg>
-                  Commandes
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link d-flex align-items-center gap-2" href="#">
-                  <svg className="bi">
-                    <use xlinkHref="#puzzle" />
-                  </svg>
-                  Integrations
-                </a>
+                  </svg> <span >commande</span></button>
+                  <button type="button" className="btn  btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span className="visually-hidden">commande</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link className="nav-link d-flex align-items-center gap-2" to="commande">
+                        Produits
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="nav-link d-flex align-items-center gap-2" to="commandePack">
+                        Packs
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+
+
               </li>
             </ul>
             <hr className="my-3" />
 
             <ul className="nav flex-column mb-auto">
-              <li className="nav-item">
-                <a className="nav-link d-flex align-items-center gap-2" href="#">
-                  <svg className="bi">
-                    <use xlinkHref="#gear-wide-connected" />
-                  </svg>
-                  Settings
-                </a>
-              </li>
               <li className="nav-item">
                 <a onClick={handleLogout} className="nav-link d-flex align-items-center gap-2" href="#">
                   <svg className="bi">

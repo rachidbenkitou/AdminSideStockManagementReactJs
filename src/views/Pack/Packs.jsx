@@ -102,8 +102,11 @@ export default function Packs() {
     };
     const handleSearch = (e) => {
         e.preventDefault()
+        if(query===""){
+            dispatch(fetchPacks(1))
+        }else{
         dispatch(searchPack(query));
-        console.log(packs)
+        console.log(packs)}
     };
 
     return (
@@ -161,9 +164,16 @@ export default function Packs() {
                                       {pack.nbrProduits}
                          </span>
                         <div className="card-image">
+                            {/*<img*/}
+                            {/*    src="https://www.zenpack.us/wp-content/uploads/2022/03/consumer_electronic_07.jpg"*/}
+                            {/*    width="270"*/}
+                            {/*    style={{borderTopRightRadius: '10px'}}*/}
+                            {/*/>*/}
                             <img
-                                src="https://www.zenpack.us/wp-content/uploads/2022/03/consumer_electronic_07.jpg"
-                                width="270"
+                                src={"/images/"+pack.image}
+                                width="200"
+                                height="180"
+                                alt="Image du pack"
                                 style={{borderTopRightRadius: '10px'}}
                             />
                         </div>
@@ -200,6 +210,8 @@ export default function Packs() {
                                     id: pack.id,
                                     codePack: pack.codePack,
                                     nbrProduits: pack.nbrProduits,
+                                    description : pack.description,
+                                    image : pack.image,
                                     disponible: pack.disponible,
                                     qte: pack.qte,
                                     prix: pack.prix,

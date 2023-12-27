@@ -13,7 +13,7 @@ export const deleteProduitFromPack = (packId,produitId)=> {
     return instance.delete(`packProduits/${packId}/${produitId}`);
 }
 export const getPack = async (codePack)=> {
-    return instance.get(`packs/codePack/${codePack}`);
+    return instance.get(`packProduits/codePack/${codePack}`);
 }
 // export const getClientByFirstNameAndLastName = async (firstName,lastName)=> {
 //     return instance.get(`clients/firstName/${firstName}/lastName/${lastName}`);

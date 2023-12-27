@@ -119,7 +119,7 @@ export default function NewClient({info}){
                                 type="button" class="btn btn-primary"
                                 data-bs-dismiss="modal">
 
-                                Save changes
+                                Ajouter
                             </button>
                         </div>
                     </div>

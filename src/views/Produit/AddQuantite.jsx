@@ -1,33 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAllFournisseurs,
-  selectFournisseurs,
-} from "../../store/FournisseurSlice";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { addproductQuantite } from "../../store/ProduitSlice";
 
 export default function AddQuantite({ produitInfo }) {
-  // const fournisseurs = useSelector(selectFournisseurs);
   const [code_produit, setCodeProduit] = useState(produitInfo.code_produit);
   const [nom, setNom] = useState(produitInfo.nom);
   const [produitId, setProduitId] = useState(produitInfo.id);
   const [qte_entree, setQteEntree] = useState("");
   const [fournisseur_id, setFournisseurId] = useState("");
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(fetchAllFournisseurs());
-  // }, [dispatch]);
   const handleAdd = () => {
-    // const produit = {
-    //   id,
-    //   code_produit,
-    //   nom,
-    //   qte_entree,
-    //   fournisseur_id,
-    // };
-    // console.log(produit);
     dispatch(addproductQuantite({ qte_entree, produitId, fournisseur_id }));
   };
 
@@ -55,7 +39,7 @@ export default function AddQuantite({ produitInfo }) {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
+              Ajouter Quantite
               </h5>
               <button
                 type="button"
@@ -110,7 +94,7 @@ export default function AddQuantite({ produitInfo }) {
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
-                Close
+                Fermer
               </button>
               <button 
               data-bs-dismiss="modal"

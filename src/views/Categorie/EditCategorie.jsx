@@ -34,7 +34,7 @@ export default function EditCategorie({categorieInfo}) {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
+              Modifer Categorie
               </h5>
               <button
                 type="button"
@@ -70,7 +70,7 @@ export default function EditCategorie({categorieInfo}) {
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
-                Close
+                Fermer
               </button>
               <button 
               data-bs-dismiss="modal"

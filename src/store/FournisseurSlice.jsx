@@ -71,8 +71,10 @@ export const updateFournisseur = createAsyncThunk(
   "fournisseur/updateFournisseur",
   async (fournisseur) => {
     try {
+      console.log(fournisseur)
       const response = await editFournisseur(fournisseur);
-      return response.data.data;
+      // console.log(response.data)
+      return response.data.fournisseur;
     } catch (error) {
       console.log(error);
     }
@@ -118,7 +120,7 @@ const fournisseurSlice = createSlice({
         toast.success('Fournisseur ajouté avec succès');
       })
       .addCase(updateFournisseur.fulfilled, (state, action) => {
-        console.log(action.payload)
+        // console.log(action.payload)
         state.fournisseurs = state.fournisseurs.map((item) =>
           item.id === action.payload.id ? { ...item, ...action.payload } : item
         );

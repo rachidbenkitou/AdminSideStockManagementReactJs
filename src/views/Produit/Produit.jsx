@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createClient } from "pexels";
 import "./produit.css";
-import image from "./image.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProduits,
@@ -13,18 +11,23 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDollar,
-  faEdit,
-  faPlus,
-  faShoppingBag,
+  faSearch,
   faTrash,
   faTruck,
+  faUsd,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import AddProduit from "./AddProduit";
 import AddQuantite from "./addQuantite";
 import EditProduit from "./EditProduit";
-import { fetchAllFournisseurs, selectFournisseurs } from "../../store/FournisseurSlice";
-import { fetchAllCategories, selectCategories } from "../../store/CategorieSlice";
+import {
+  fetchAllFournisseurs,
+  selectFournisseurs,
+} from "../../store/FournisseurSlice";
+import {
+  fetchAllCategories,
+  selectCategories,
+} from "../../store/CategorieSlice";
 export default function Produit() {
   const dispatch = useDispatch();
   const fournisseurs = useSelector(selectFournisseurs);
@@ -51,10 +54,14 @@ export default function Produit() {
       });
   }, [dispatch]);
 
-
   const handleDelete = (produit) => {
-    console.log(produit);
     dispatch(removeProduit(produit));
+    if (produits.length <= 1) {
+      setCurrentPage(currentPage - 1);
+      dispatch(fetchProduits(currentPage - 1));
+    } else {
+      dispatch(fetchProduits(currentPage));
+    }
   };
   const handelPaginate = (page) => {
     if (search !== "") {
@@ -95,7 +102,19 @@ export default function Produit() {
       (_, index) => startIdx + index
     );
   };
-
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (search === "") {
+      setLoading(true);
+      dispatch(fetchProduits(1));
+      setLoading(false);
+    } else {
+      setLoading(true);
+      setCurrentPage(1);
+      dispatch(searchProduits({ words: search, page: 1 }));
+      setLoading(false);
+    }
+  };
   return (
     <>
       <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -103,17 +122,42 @@ export default function Produit() {
           <h1 className="h2">Gestion des produits</h1>
           <div className="btn-toolbar mb-2 mb-md-0">
             <div className="btn-group me-2">
-              <AddProduit produitInfo={{categories: categories, fournisseurs:fournisseurs}} />
+              <AddProduit
+                produitInfo={{
+                  categories: categories,
+                  fournisseurs: fournisseurs,
+                  page: currentPage,
+                }}
+              />
             </div>
           </div>
         </div>
-        {produits.length <= 0 && (
+        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+          <form className="d-flex" role="search">
+            <input
+              className="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button
+              onClick={(e) => handleSearch(e)}
+              className="btn btn-outline-primary"
+              type="submit"
+            >
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </form>
+        </div>
+        {/* {produits.length <= 0 && (
           <div className="spiner">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
-        )}
+        )} */}
         {/* Statr */}
         {produits.length > 0 && (
           <>
@@ -138,18 +182,18 @@ export default function Produit() {
                     </span>
                     <div class="card-image">
                       <img
-                        // src="https://uno.ma/pub/media/catalog/product/cache/af8d7fd2c4634f9c922fba76a4a30c04/u/1/u1.jpg"
-                        // src={"./images/image1.jpg"}
-                        src={image}
+                         src={"/images/"+produit.image}
                         width="120"
-                        alt="Image du produit"
+                        height="150"  
+                        alt="image"
                       />
                     </div>
 
                     <div class="card-inner">
                       <div className="d-flex justify-content-between  align-items-center">
                         <div>
-                          <span>{produit.categorie_nom}</span>
+                          <span>{produit.categorie_nom}
+                          </span>
                           <h5 class="mb-0">{produit.nom}</h5>
                         </div>
                         <div class="price">
@@ -170,13 +214,15 @@ export default function Produit() {
                             <FontAwesomeIcon icon={faTruck} /> Fournisseur
                           </button>
                           <ul class="dropdown-menu">
-                            {Array.isArray(produit.fournisseurs) &&  produit.fournisseurs.map((fournisseur, index) => (
-                              <li key={index}>
-                                <a class="dropdown-item" href="#">
-                                  {fournisseur.nom}: {fournisseur.qte_entree}
-                                </a>
-                              </li>
-                            ))}
+                            {Array.isArray(produit.fournisseurs) &&
+                              produit.fournisseurs.map((fournisseur, index) => (
+                                <li key={index}>
+                                  <a class="dropdown-item" href="#">
+                                    <FontAwesomeIcon icon={faUser} />{" "}
+                                    {fournisseur.nom}: {fournisseur.qte_entree}
+                                  </a>
+                                </li>
+                              ))}
                           </ul>
                         </div>
                         <div class="d-flex test flex-row justify-content-between">
@@ -186,7 +232,7 @@ export default function Produit() {
                                 id: produit.id,
                                 code_produit: produit.code_produit,
                                 nom: produit.nom,
-                                fournisseurs:fournisseurs
+                                fournisseurs: fournisseurs,
                               }}
                             />
                           </span>
@@ -199,7 +245,7 @@ export default function Produit() {
                               nom: produit.nom,
                               quantite: produit.quantite,
                               description: produit.description,
-                              categories: categories
+                              categories: categories,
                             }}
                           />
                           {/* </span> */}
